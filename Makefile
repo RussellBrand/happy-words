@@ -1,5 +1,11 @@
 PYTHON_VERSION=python3.13
 
+test:
+	python3 ./jumbles.py
+	python3 ./jumbles.py --count=3
+	python3 ./jumbles.py --words=3
+	python3 ./jumbles.py --count=2 --words=4
+
 
 .venv.installed:
 	$(PYTHON_VERSION) -m venv .venv
