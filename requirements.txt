@@ -1,4 +1,6 @@
 docopt
 schema
 icecream
+pylint
+mypy
 

@@ -1,0 +1,15 @@
+{
+  "files.autoSave": "onFocusChange",
+
+  "type": "setting",
+  "settings": {
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.lintOnSave": true
+  },
+
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingTypeStubs": "none",
+    "reportMissingModuleSource": "none"
+  }
+}

@@ -1,6 +1,6 @@
 # happy-words
 
-## Todo
+## Jumble Todo
 ### [ ] output to files
 ### [ ] support hints
 hints are how many letters there are in each word
@@ -9,8 +9,8 @@ verbose
 check dict is openable
 ### [ ] -v for --verbose=
 
-
-### [ ] 
+## Wordesearch Todeo
+### [ ] pathlib
 ### [ ] 
 ### [ ] 
 ### [ ] 
