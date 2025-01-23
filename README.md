@@ -18,6 +18,8 @@ check dict is openable
 ### [ ] make a type for puzzle
 ### [ ] use verbose flag
 ### [ ] allow overlapping words
+### [ ] divide things up to support unit test
+
 
 
 
