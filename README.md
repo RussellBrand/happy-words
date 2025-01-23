@@ -10,10 +10,16 @@ check dict is openable
 ### [ ] -v for --verbose=
 
 ## Wordesearch Todeo
-### [ ] pathlib
-### [ ] 
-### [ ] 
-### [ ] 
-### [ ] 
+### [ ] use pathlib for IO
+### [ ] in wordearch -- why can't i import and use type Color ??
+### [ ] make capitlization hint a parameter
+### [ ] make colorize a paramater
+### [ ] have main use command line args
+### [ ] make a type for puzzle
+### [ ] use verbose flag
+### [ ] allow overlapping words
+
+
+
 
 

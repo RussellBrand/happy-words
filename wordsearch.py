@@ -7,6 +7,8 @@ from sys import argv
 from icecream import ic
 import random
 from typing import Final
+from termcolor import colored
+
 
 # ic.disable()
 ic.configureOutput(includeContext=True, contextAbsPath=False)
@@ -33,7 +35,7 @@ Options:
 FILLER: Final[str] = '.'
 
 
-def main(count: int, dictionary_fn: str, out: str, answer_fn: str, seed: int, verbose: bool, x: int, y: int) -> None:
+def main(count: int, dictionary_fn: str, out: str, answer_fn: str, search_list: str, seed: int, verbose: bool, x: int, y: int) -> None:
     random.seed(seed)
     # use pathlib
     with open(dictionary_fn) as f:
@@ -45,7 +47,10 @@ def main(count: int, dictionary_fn: str, out: str, answer_fn: str, seed: int, ve
     # ic(puzzle)
 
     chosen_words = random.sample(words, count)
-    directions_list = [(1, 0), (0, 1), (1, 1)]
+    skipped_words: set[str] = set()
+    # why can't i import and use type Color ??
+    directions_list: list[tuple[int, int, str]] = [(1, 0, "red"), (0, 1, "green"),
+                                                   (1, 1, "blue"), (-1, 0, "yellow"), (0, -1, "magenta"), (-1, -1, "cyan"), (1, -1, "white"), (-1, 1, "grey")]
     for wd in chosen_words:
         wd: str
         placed = False
@@ -54,7 +59,10 @@ def main(count: int, dictionary_fn: str, out: str, answer_fn: str, seed: int, ve
         # the stuff in this while loop should be factored out for unit testing
 
         while not placed and attempts > 0:
-            dx, dy = random.choice(directions_list)
+            dx, dy, color = random.choice(directions_list)
+            dx: int
+            dy: int
+
             # ic(dx, dy, wd)
 
             if dx == 0:
@@ -75,29 +83,51 @@ def main(count: int, dictionary_fn: str, out: str, answer_fn: str, seed: int, ve
                 if CAPTIALIZE:
                     wd = wd.capitalize()
                 for i, letter in enumerate(wd):
-                    puzzle[sy + i*dy][sx + i*dx] = letter
+                    # type: ignore
+                    # type: ignore
+                    puzzle[sy + i*dy][sx + i*dx] = colored(letter, color)
+                    # letter
+
                 placed = True
             attempts -= 1
         if not placed:
             print(f"Warning: could not place {wd}", file=sys.stderr)
+            skipped_words.add(wd)
 
+    print('\nPuzzle:\n')
     print(puzzle_to_str(puzzle))
-    exit(0)
-    with open(out, 'w') as f:
-        for row in puzzle:
-            f.write(''.join(row) + '\n')
+    # exit(0)
     with open(answer_fn, 'w') as f:
         for word in words:
             f.write(word + '\n')
-    if verbose:
-        for row in puzzle:
-            print(''.join(row))
-        print()
-        for word in words:
-            print(word)
-        print()
-    print(f'Puzzle written to {out}')
     print(f'Answer written to {answer_fn}')
+
+    obscured_puzzle: list[list[str]] = puzzle_obscurify(puzzle)
+    print('\nObscured puzzle:\n')
+    print(puzzle_to_str(obscured_puzzle))
+    with open(out, 'w') as f:
+        for row in puzzle:
+            f.write(''.join(row) + '\n')
+
+    print(f'Puzzle written to {out}')
+
+    with open(search_list, 'w') as f:
+        for word in chosen_words:
+            if word not in skipped_words:
+                f.write(word + '\n')
+
+    print(f'Search list written to {search_list}')
+
+
+def puzzle_obscurify(puzzle: list[list[str]]) -> list[list[str]]:
+    answer: list[list[str]] = []
+    for line in puzzle:
+        answer.append([random_letter() if c == FILLER else c for c in line])
+    return answer
+
+
+def random_letter() -> str:
+    return chr(random.randint(ord('a'), ord('z')))
 
 
 def puzzle_to_str(puzzle: list[list[str]]) -> str:
@@ -105,7 +135,8 @@ def puzzle_to_str(puzzle: list[list[str]]) -> str:
 
 
 if __name__ == '__main__':
-    main(100,   'words.txt', 'puzzle.txt', 'answer.txt', 0, False, 60, 10)
+    main(5,   'words.txt', 'puzzle.txt', 'answer.txt',
+         'search-list.txt', 0, False, 60, 10)
 
     # args = docopt(doc)
     # ic(args)

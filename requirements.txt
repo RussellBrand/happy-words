@@ -3,4 +3,6 @@ schema
 icecream
 pylint
 mypy
+termcolor
+
 
